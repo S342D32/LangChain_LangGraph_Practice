@@ -1,0 +1,23 @@
+# Environment
+.env
+.venv
+venv/
+
+# LangGraph local state
+.langgraph_api/
+
+# Python build artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Generated files
+generated_images/
+
+# Logs
+*.log

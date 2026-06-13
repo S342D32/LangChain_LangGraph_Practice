@@ -1,0 +1,7 @@
+backend/.env
+backend/.venv
+backend/venv/
+backend/.langgraph_api/
+backend/__pycache__/
+backend/*.egg-info/
+backend/generated_images/

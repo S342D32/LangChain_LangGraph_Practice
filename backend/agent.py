@@ -6,7 +6,6 @@ from datetime import datetime
 
 from deepagents import create_deep_agent
 from langchain_ollama import ChatOllama
-from langgraph.checkpoint.postgres import PostgresSaver
 
 from research_agent.prompts import (
     RESEARCHER_INSTRUCTIONS,

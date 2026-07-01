@@ -135,6 +135,7 @@ def think_tool(reflection: str) -> str:
     """
     return f"Reflection recorded: {reflection}"
 
+
 @tool(parse_docstring=True)
 def generate_image(
     prompt: str,
@@ -162,6 +163,7 @@ def generate_image(
     filename = f"{output_dir}/{prompt[:50].replace(' ', '_')}.png"
     image.save(filename, format="PNG")
     return f"✅ Image saved to: {filename}"
+
 
 def get_database_schema() -> str:
     """Get the PostgreSQL database schema (tables and columns).
@@ -191,12 +193,15 @@ def get_database_schema() -> str:
             schema_info += f"### Table: `{table_name}`\n"
 
             # Get columns for this table
-            cursor.execute(f"""
+            cursor.execute(
+                f"""
                 SELECT column_name, data_type, is_nullable, column_default
                 FROM information_schema.columns
                 WHERE table_name = %s
                 ORDER BY ordinal_position
-            """, (table_name,))
+            """,
+                (table_name,),
+            )
 
             columns = cursor.fetchall()
             schema_info += "| Column | Type | Nullable | Default |\n"
@@ -205,7 +210,9 @@ def get_database_schema() -> str:
             for col_name, col_type, nullable, default in columns:
                 nullable_str = "Yes" if nullable == "YES" else "No"
                 default_str = default if default else "None"
-                schema_info += f"| `{col_name}` | {col_type} | {nullable_str} | {default_str} |\n"
+                schema_info += (
+                    f"| `{col_name}` | {col_type} | {nullable_str} | {default_str} |\n"
+                )
 
             schema_info += "\n"
 
@@ -218,7 +225,9 @@ def get_database_schema() -> str:
 
 
 @tool(parse_docstring=True)
-def execute_database_query(query: str, limit: Annotated[int, InjectedToolArg] = 10) -> str:
+def execute_database_query(
+    query: str, limit: Annotated[int, InjectedToolArg] = 10
+) -> str:
     """Execute a SELECT query on the PostgreSQL database and return results.
 
     IMPORTANT: Only SELECT queries are allowed for safety. The query will be limited to
@@ -290,7 +299,7 @@ def analyze_data_for_updates(table_name: str, condition: str) -> str:
         count_query = f"SELECT COUNT(*) as count FROM {table_name} WHERE {condition}"
         cursor.execute(count_query)
         count_result = cursor.fetchone()
-        affected_count = count_result['count']
+        affected_count = count_result["count"]
 
         # Get sample records
         sample_query = f"SELECT * FROM {table_name} WHERE {condition} LIMIT 5"
@@ -339,4 +348,3 @@ def generate_chart(chart_type: str, title: str, labels: list, datasets: list) ->
         "labels": labels,
         "datasets": datasets,
     }
-

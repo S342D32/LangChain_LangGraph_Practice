@@ -1,9 +1,8 @@
 
-const test = () => {
+const test2 = () => {
   return (
-    <div>test</div>
-    <i class="see fa-solar-panel"></i>
+    <div>test2</div>
   )
 }
 
-export default <test> </test>
+export default test2
